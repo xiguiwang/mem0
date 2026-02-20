@@ -1,0 +1,18 @@
+services:
+  Qwen3-Embedding-0.6B:
+    container_name: Qwen3-Embedding-0.6B
+    restart: no
+    image:  vllm/vllm-openai:v0.9.2
+    ipc: host
+    volumes:
+      - /home/xwang/.cache/modelscope/hub/models/qwen/qwen3-embedding-0___6b:/models/qwen3-embedding-0.6b
+    command: ["--model", "/models/qwen3-embedding-0.6b", "--served-model-name", "Qwen3-Embedding-0.6B",  "--gpu-memory-utilization", "0.10", "--max_model_len", "2048"]
+    ports:
+      - 8007:8000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
