@@ -26,6 +26,11 @@ POSTGRES_COLLECTION_NAME = os.environ.get("POSTGRES_COLLECTION_NAME", "memories"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 HISTORY_DB_PATH = os.environ.get("HISTORY_DB_PATH", os.path.join(os.path.dirname(__file__), "history.db"))
 
+LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "http://localhost:8000/v1")
+LLM_MODEL = os.environ.get("LLM_MODEL", "Qwen/Qwen3-4B")
+EMBEDDER_BASE_URL = os.environ.get("EMBEDDER_BASE_URL", "http://localhost:8007/v1")
+EMBEDDER_MODEL = os.environ.get("EMBEDDER_MODEL", "Qwen3-Embedding-0.6B")
+
 DEFAULT_CONFIG = {
     "version": "v1.1",
     "vector_store": {
@@ -40,8 +45,8 @@ DEFAULT_CONFIG = {
             "embedding_model_dims": 1024,
         },
     },
-    "llm": {"provider": "openai", "config": {"api_key": "EMPTY", "openai_base_url": "http://localhost:8000/v1", "temperature": 0.2, "model": "Qwen/Qwen3-4B"}},
-    "embedder": {"provider": "openai", "config": {"api_key": "NOT_NEED", "openai_base_url": "http://localhost:8007/v1", "model": "Qwen3-Embedding-0.6B"}},
+    "llm": {"provider": "openai", "config": {"api_key": "EMPTY", "openai_base_url": LLM_BASE_URL, "temperature": 0.2, "model": LLM_MODEL}},
+    "embedder": {"provider": "openai", "config": {"api_key": "NOT_NEED", "openai_base_url": EMBEDDER_BASE_URL, "model": EMBEDDER_MODEL}},
     "history_db_path": HISTORY_DB_PATH,
 }
 
