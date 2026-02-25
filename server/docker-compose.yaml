@@ -5,14 +5,9 @@ services:
     build:
       context: ..  # Set context to parent directory
       dockerfile: server/dev.Dockerfile
-    ports:
-      - "8888:8000"
+    network_mode: host
     env_file:
       - .env
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      - mem0_network
     volumes:
       - ./history:/app/history      # History db location
       - .:/app                      # Server code (auto-reload)
@@ -20,21 +15,20 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8888 --reload
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
-      - POSTGRES_HOST=postgres
+      - POSTGRES_HOST=localhost
       - POSTGRES_PORT=5432
-      - LLM_BASE_URL=http://host.docker.internal:8000/v1
-      - EMBEDDER_BASE_URL=http://host.docker.internal:8007/v1
+      - LLM_BASE_URL=http://localhost:8000/v1
+      - EMBEDDER_BASE_URL=http://localhost:8007/v1
 
   postgres:
       image: ankane/pgvector:v0.5.1
       restart: on-failure
       shm_size: "128mb"
-      networks:
-        - mem0_network
+      network_mode: host
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
@@ -45,12 +39,6 @@ services:
         retries: 5
       volumes:
         - postgres_db:/var/lib/postgresql/data
-      ports:
-        - "8432:5432"
 
 volumes:
   postgres_db:
-
-networks:
-  mem0_network:
-    driver: bridge
