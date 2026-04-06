@@ -27,7 +27,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 HISTORY_DB_PATH = os.environ.get("HISTORY_DB_PATH", os.path.join(os.path.dirname(__file__), "history.db"))
 
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "http://localhost:8000/v1")
-LLM_MODEL = os.environ.get("LLM_MODEL", "Qwen/Qwen3-4B")
+LLM_MODEL = os.environ.get("LLM_MODEL", "Qwen/Qwen3.5-4B")
 EMBEDDER_BASE_URL = os.environ.get("EMBEDDER_BASE_URL", "http://localhost:8007/v1")
 EMBEDDER_MODEL = os.environ.get("EMBEDDER_MODEL", "Qwen3-Embedding-0.6B")
 
